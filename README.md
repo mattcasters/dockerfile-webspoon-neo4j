@@ -9,6 +9,15 @@ docker-compose up -d
 
 or the script: runWebspoonNeo4j.sh
 
+# Using
+
+WebSpoon: http://<server>:8080/spoon/spoon
+Carte   : http://<server>:8080/spoon/kettle/status  (use application spoon in slave server definitions)
+Neo4j   : http://<server>:7474/spoon/spoon
+          bolt port : 7687
+          username: neo4j
+          password: change in docker-compose.yml
+
 # Prerequisites
 
 You need to have the following installed:
