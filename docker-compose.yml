@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  neo:
+    image: neo4j:latest
+    environment:
+      - "NEO4J_AUTH=neo4j/7BOHy2ASDt7&"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./data:/data
+    networks: 
+      - backend
+  webspoon:
+    depends_on:
+      - neo
+    image: mattcasters/webspoon-neo4j:latest
+    ports:
+      - "8080:8080"
+    links:
+      - neo
+    networks: 
+      - backend
+networks:
+  backend:
+    driver: "bridge"

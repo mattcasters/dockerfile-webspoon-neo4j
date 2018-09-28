@@ -1,0 +1,33 @@
+FROM hiromuhota/webspoon:latest-full
+MAINTAINER Matt Casters <mattcasters@gmail.com>
+ENV JAVA_OPTS="-Xms4g -Xmx8g"
+
+# Get the latest Neo4j Kettle plugins from github
+# This creates a file /tmp/Neo4jOutput-latest.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+COPY getLatestNeo4jPlugins.sh /tmp/
+RUN /tmp/getLatestNeo4jPlugins.sh
+RUN unzip /tmp/Neo4jOutput-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Get the latest Kettle debug plugin from github to improve debugging capabilities
+# This creates file /tmp/kettle-debug-plugin-latest.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+COPY getLatestKettleDebugPlugin.sh /tmp/
+RUN /tmp/getLatestKettleDebugPlugin.sh
+RUN unzip /tmp/kettle-debug-plugin-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Populate the standard metastore metadata for the Local Neo4j connection
+# and a Belgian Beers graph model for testing and demo
+# 
+# This populates /root/.pentaho/metastore/Neo4j folders
+# 
+RUN mkdir /root/.pentaho/
+COPY metastore /root/.pentaho/
+
+# Copy the Neo4j plugin examples project into /root/.kettle/data/Samples
+#
+RUN mkdir -p /root/.kettle/data/Samples
+COPY kettle-plugin-examples.zip /tmp
+RUN unzip /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/Samples
