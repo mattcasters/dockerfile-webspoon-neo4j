@@ -23,7 +23,7 @@ RUN unzip /tmp/kettle-debug-plugin-latest.zip -d ${CATALINA_HOME}/plugins
 # 
 # This populates /root/.pentaho/metastore/Neo4j folders
 # 
-RUN mkdir /root/.pentaho/
+RUN mkdir -p /root/.pentaho/
 COPY metastore /root/.pentaho/
 
 # Copy the Neo4j plugin examples project into /root/.kettle/data/Samples
