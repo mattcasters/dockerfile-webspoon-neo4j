@@ -26,6 +26,15 @@ COPY getLatestAzurePlugins.sh /tmp
 RUN /tmp/getLatestAzurePlugins.sh
 RUN unzip /tmp/kettle-azure-event-hubs-latest.zip -d ${CATALINA_HOME}/plugins
 
+# Get the latest Kettle Data Set plugin
+# This creates file /tmp/pentaho-pdi-dataset.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+COPY getLatestDataSetPlugin.sh /tmp
+RUN /tmp/getLatestDataSetPlugin.sh
+RUN unzip /tmp/pentaho-pdi-dataset-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Populate the standard metastore metadata for the Local Neo4j connection
 # Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo
 # 
