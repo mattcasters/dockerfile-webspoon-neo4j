@@ -17,7 +17,7 @@ services:
       - neo
     image: mattcasters/webspoon-neo4j:latest
     environment:
-     - "JAVA_OPTS=-Xms4g -Xmx8g"
+     - "JAVA_OPTS=-Xms16g -Xmx16g"
     ports:
       - "8080:8080"
     links:

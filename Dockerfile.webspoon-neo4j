@@ -18,6 +18,14 @@ COPY getLatestKettleDebugPlugin.sh /tmp/
 RUN /tmp/getLatestKettleDebugPlugin.sh
 RUN unzip /tmp/kettle-debug-plugin-latest.zip -d ${CATALINA_HOME}/plugins
 
+# Get the latest Azure Event Hubs Plugins
+# This creates file /tmp/kettle-azure-event-hubs-latest.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+COPY getLatestAzurePlugins.sh /tmp
+RUN /tmp/getLatestAzurePlugins.sh
+RUN unzip /tmp/kettle-azure-event-hubs-latest.zip -d ${CATALINA_HOME}/plugins
+
 # Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo
 # 
@@ -31,3 +39,4 @@ COPY metastore /root/.pentaho/metastore
 RUN mkdir -p /root/.kettle/data/
 COPY kettle-plugin-examples.zip /tmp
 RUN unzip /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
+
