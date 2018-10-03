@@ -35,7 +35,6 @@ RUN /tmp/getLatestDataSetPlugin.sh
 RUN unzip /tmp/pentaho-pdi-dataset-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Populate the standard metastore metadata for the Local Neo4j connection
-# Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo
 # 
 # This populates /root/.pentaho/metastore/Neo4j folders
