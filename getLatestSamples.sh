@@ -9,5 +9,12 @@ then
   rm -f ${FILE_BASE}.zip
 fi
 
-zip -q -r ${FILE_BASE}.zip kettle-plugin-examples -x *.git*
+if [ -d ~/software/samples ]
+then
+  ( cd ~/software/ && zip -q -r - samples ) > ${FILE_BASE}.zip
+  echo Added Kettle samples
+fi
+
+zip -q -u -r ${FILE_BASE}.zip kettle-plugin-examples -x *.git*
+echo Added kettle-plugin-examples github project
 
