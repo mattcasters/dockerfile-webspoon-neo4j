@@ -6,6 +6,8 @@ VERSION=$( curl --silent "https://api.github.com/repos/$PROJECT/releases/latest"
 
 ZIP=https://github.com/knowbi/knowbi-pentaho-pdi-neo4j-output/releases/download/$VERSION/Neo4JOutput-${VERSION}.zip
 
+echo $PROJECT version $VERSION
+
 curl --silent $ZIP -L -O
 
 rm -f Neo4jOutput-latest.zip

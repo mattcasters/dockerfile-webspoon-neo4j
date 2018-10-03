@@ -1,11 +1,13 @@
 
-set -x
-
 FILE_BASE=kettle-plugin-examples
 rm -rf ${FILE_BASE}
 
-git clone git@github.com:neo4j-examples/kettle-plugin-examples.git
+git clone git@github.com:neo4j-examples/kettle-plugin-examples.git 2> kettle-plugin-examples-git.log
 
-rm -f ${FILE_BASE}.zip
-zip -r ${FILE_BASE}.zip kettle-plugin-examples -x *.git*
+if [ -f ${FILE_BASE}.zip ]
+then
+  rm -f ${FILE_BASE}.zip
+fi
+
+zip -q -r ${FILE_BASE}.zip kettle-plugin-examples -x *.git*
 
