@@ -1,5 +1,5 @@
 
-set -ex
+# set -ex
 
 cd /tmp
 
