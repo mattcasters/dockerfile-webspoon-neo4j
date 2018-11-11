@@ -2,39 +2,45 @@ FROM hiromuhota/webspoon:latest-full
 MAINTAINER Matt Casters <mattcasters@gmail.com>
 ENV JAVA_OPTS="-Xms4g -Xmx8g"
 
+# Common latest-from-github-releases download script
+# 
+COPY getLatestBase.sh /tmp/
+
 # Get the latest Neo4j Kettle plugins from github
-# This creates a file /tmp/Neo4jOutput-latest.zip
+# This creates a file /tmp/Neo4JOutput-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
-COPY getLatestNeo4jPlugins.sh /tmp/
-RUN /tmp/getLatestNeo4jPlugins.sh
-RUN unzip /tmp/Neo4jOutput-latest.zip -d ${CATALINA_HOME}/plugins
+RUN /tmp/getLatestBase.sh knowbi/knowbi-pentaho-pdi-neo4j-output Neo4JOutput
+RUN unzip /tmp/Neo4JOutput-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Kettle debug plugin from github to improve debugging capabilities
 # This creates file /tmp/kettle-debug-plugin-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
-COPY getLatestKettleDebugPlugin.sh /tmp/
-RUN /tmp/getLatestKettleDebugPlugin.sh
+RUN /tmp/getLatestBase.sh mattcasters/kettle-debug-plugin kettle-debug-plugin
 RUN unzip /tmp/kettle-debug-plugin-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Azure Event Hubs Plugins
 # This creates file /tmp/kettle-azure-event-hubs-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
-COPY getLatestAzurePlugins.sh /tmp
-RUN /tmp/getLatestAzurePlugins.sh
+RUN /tmp/getLatestBase.sh mattcasters/kettle-azure-event-hubs kettle-azure-event-hubs
 RUN unzip /tmp/kettle-azure-event-hubs-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Kettle Data Set plugin
 # This creates file /tmp/pentaho-pdi-dataset.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
-COPY getLatestDataSetPlugin.sh /tmp
-RUN /tmp/getLatestDataSetPlugin.sh
+RUN /tmp/getLatestBase.sh mattcasters/pentaho-pdi-dataset pentaho-pdi-dataset
 RUN unzip /tmp/pentaho-pdi-dataset-latest.zip -d ${CATALINA_HOME}/plugins
 
-# Populate the standard metastore metadata for the Local Neo4j connection
+# Get the latest Kettle Neo4j Logging plugin
+# This creates file /tmp/pentaho-neo4j-logging.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+RUN /tmp/getLatestBase.sh mattcasters/kettle-neo4j-logging kettle-neo4j-logging
+RUN unzip /tmp/kettle-neo4j-logging-latest.zip -d ${CATALINA_HOME}/plugins
+
 # Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo
 # 
