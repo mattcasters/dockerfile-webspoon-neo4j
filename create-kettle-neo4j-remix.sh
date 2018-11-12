@@ -1,5 +1,5 @@
 
-set -ex
+# set -ex
 
 BASE_FILE=~/software/pdi-ce-8.1.0.0-365.zip
 REMIX_VERSION=8.1.0.4-REMIX
