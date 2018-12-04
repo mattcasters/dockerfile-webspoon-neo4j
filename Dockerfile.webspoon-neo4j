@@ -1,4 +1,4 @@
-FROM hiromuhota/webspoon:latest-full
+FROM hiromuhota/webspoon:nightly-full
 MAINTAINER Matt Casters <mattcasters@gmail.com>
 ENV JAVA_OPTS="-Xms4g -Xmx8g"
 
@@ -40,6 +40,13 @@ RUN unzip /tmp/pentaho-pdi-dataset-latest.zip -d ${CATALINA_HOME}/plugins
 #
 RUN /tmp/getLatestBase.sh mattcasters/kettle-neo4j-logging kettle-neo4j-logging
 RUN unzip /tmp/kettle-neo4j-logging-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Get the latest Kettle Needful Things plugin
+# This creates file /tmp/pentaho-needful-things.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+RUN /tmp/getLatestBase.sh mattcasters/kettle-needful-things kettle-needful-things
+RUN unzip /tmp/kettle-needful-things-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo
