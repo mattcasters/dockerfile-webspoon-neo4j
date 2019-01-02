@@ -15,6 +15,6 @@ then
   echo Added Kettle samples
 fi
 
-zip -q -u -r ${FILE_BASE}.zip kettle-plugin-examples -x *.git*
+zip -q -u -r ${FILE_BASE}.zip kettle-plugin-examples 
 echo Added kettle-plugin-examples github project
 

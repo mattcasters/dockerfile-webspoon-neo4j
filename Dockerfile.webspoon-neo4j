@@ -1,10 +1,11 @@
-FROM hiromuhota/webspoon:nightly-full
+FROM hiromuhota/webspoon:0.8.2.17-full
 MAINTAINER Matt Casters <mattcasters@gmail.com>
 ENV JAVA_OPTS="-Xms4g -Xmx8g"
 
 # Common latest-from-github-releases download script
 # 
 COPY getLatestBase.sh /tmp/
+COPY getLatestSpoonGit.sh /tmp/
 
 # Get the latest Neo4j Kettle plugins from github
 # This creates a file /tmp/Neo4JOutput-latest.zip
@@ -28,25 +29,39 @@ RUN /tmp/getLatestBase.sh mattcasters/kettle-azure-event-hubs kettle-azure-event
 RUN unzip /tmp/kettle-azure-event-hubs-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Kettle Data Set plugin
-# This creates file /tmp/pentaho-pdi-dataset.zip
+# This creates file /tmp/pentaho-pdi-dataset-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
 RUN /tmp/getLatestBase.sh mattcasters/pentaho-pdi-dataset pentaho-pdi-dataset
 RUN unzip /tmp/pentaho-pdi-dataset-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Kettle Neo4j Logging plugin
-# This creates file /tmp/pentaho-neo4j-logging.zip
+# This creates file /tmp/kettle-neo4j-logging-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
 RUN /tmp/getLatestBase.sh mattcasters/kettle-neo4j-logging kettle-neo4j-logging
 RUN unzip /tmp/kettle-neo4j-logging-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Get the latest Kettle Needful Things plugin
-# This creates file /tmp/pentaho-needful-things.zip
+# This creates file /tmp/kettle-needful-things-latest.zip
 # Unzip this in ${CATALINA_HOME}/plugins
 #
 RUN /tmp/getLatestBase.sh mattcasters/kettle-needful-things kettle-needful-things
 RUN unzip /tmp/kettle-needful-things-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Get the latest Kettle Metastore plugin
+# This creates file /tmp/kettle-metastore-latest.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+RUN /tmp/getLatestBase.sh mattcasters/kettle-metastore kettle-metastore
+RUN unzip /tmp/kettle-metastore-latest.zip -d ${CATALINA_HOME}/plugins
+
+# Get the latest GitSpoon plugin
+# This creates file /tmp/pdi-git-plugin-latest.zip
+# Unzip this in ${CATALINA_HOME}/plugins
+#
+RUN /tmp/getLatestSpoonGit.sh
+RUN unzip /tmp/pdi-git-plugin-latest.zip -d ${CATALINA_HOME}/plugins
 
 # Populate the standard metastore metadata for the Local Neo4j connection
 # and a Belgian Beers graph model for testing and demo

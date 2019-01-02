@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element>
+   <id>Git1</id>
+   <value></value>
+   <type>String</type>
+   <children>
+      <child>
+         <id>name</id>
+         <value>Kettle Neo4j Plugin Examples</value>
+         <type>String</type>
+      </child>
+      <child>
+         <id>description</id>
+	 <value>The git repository neo4j-examples/kettle-plugin-examples on GitHub</value>
+         <type>String</type>
+      </child>
+      <child>
+         <id>type</id>
+         <value>Git</value>
+         <type>String</type>
+      </child>
+      <child>
+         <id>directory</id>
+         <value>/root/.kettle/data/kettle-plugin-examples</value>
+         <type>String</type>
+      </child>
+   </children>
+   <name>Kettle Neo4j Plugin Examples</name>
+   <security>
+      <owner/>
+      <owner-permissions-list/>
+   </security>
+</element>
