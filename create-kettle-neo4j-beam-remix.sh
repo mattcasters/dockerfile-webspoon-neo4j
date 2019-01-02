@@ -6,9 +6,10 @@ SOFT_DIR=/home/kettle/software
 
 BASE_FILE=$SOFT_DIR/pdi-ce-8.2.0.0-342.zip
 REMIX_VERSION=8.2.0.1-REMIX
-REMIX_FILE=kettle-neo4j-remix-$REMIX_VERSION.zip
+REMIX_FILE=kettle-neo4j-beam-remix-$REMIX_VERSION.zip
 TMP=/tmp
 FOLDER=$TMP/data-integration
+BEAM_PLUGIN_FILE=kettle-beam-20181210.zip
 
 echo Remix build start
 echo Remix version : $REMIX_VERSION
@@ -98,11 +99,35 @@ unzip -q -o $TMP/pdi-git-plugin-latest.zip -d $FOLDER/plugins
 ./getLatestBase.sh mattcasters/kettle-environment kettle-environment
 unzip -q -o $TMP/kettle-environment-latest.zip -d $FOLDER/plugins
 
+# Kettle Beam : 300MB
+#
+unzip -q -o $SOFT_DIR/$BEAM_PLUGIN_FILE -d $FOLDER/plugins
+echo $BEAM_PLUGIN_FILE
+
+# The Kettle Beam Examples
+#
+cd $FOLDER/samples/
+git clone git@github.com:mattcasters/kettle-beam-examples.git 2> /dev/null > /dev/null
+echo kettle-beam-examples cloned
+
 # Correct other writeable permissions
 #
 cd $FOLDER
 chmod -R o-w *
 echo file permissions fixed
+
+# Remove more big data cr*p from system/
+# 
+# find $FOLDER/system -type d -name '*-big-data*' -exec rm -rf {} \; 2>/dev/null >/dev/null
+# rm -f $FOLDER/system/karaf/system/pentaho/pentaho-osgi-config/8.2.0.0-342/pentaho-osgi-config-8.2.0.0-342-pentaho-big-data-impl-cluster.cfg
+# cp $SOFT_DIR/latest-patches/pentaho-karaf-features-8.2.0.0-342-standard.xml \
+#     $FOLDER/system/karaf/system/pentaho/pentaho-karaf-features/8.2.0.0-342/pentaho-karaf-features-8.2.0.0-342-standard.xml
+# echo removed big-data-plugin features
+
+# Patch plugins
+#
+cp -r -v $SOFT_DIR/plugin-patches/* $FOLDER/plugins/
+echo patched plugins
 
 # Now zip it back up...
 #
@@ -114,6 +139,7 @@ then
 fi
 
 zip -q -r "$REMIX_FILE" data-integration
+
 
 echo Uploading remix archive to s3://kettle-neo4j
 

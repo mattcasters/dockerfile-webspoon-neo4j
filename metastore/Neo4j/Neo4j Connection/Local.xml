@@ -6,7 +6,7 @@
    <children>
       <child>
          <id>server</id>
-         <value>sandbox.kettle.be</value>
+         <value>neo</value>
          <type>String</type>
       </child>
       <child>
