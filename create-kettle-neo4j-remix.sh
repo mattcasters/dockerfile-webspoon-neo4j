@@ -18,7 +18,7 @@ TMP_DIR_BASE=/tmp
 KETTLE_FOLDER=${TMP_DIR_BASE}/data-integration
 PLUGINS_TO_DELETE_LIST="kettle-openerp-plugin kettle-shapefilereader-plugin kettle-version-checker kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin"
 ENGINE_CONFIG_PATCH=$SOFT_DIR/pdi-engine-configuration-${KETTLE_BUILD}.zip
-BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-0.3.0.zip
+BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-0.4.0.zip
 
 # Make sure the base release file exists
 #
@@ -28,13 +28,16 @@ then
   exit 1
 fi
 
+if [ "$BUILD_TYPE" = "beam" ]
+then
+
 ################################################################
 # BEAM options
 ################################################################
 
-if [ "$BUILD_TYPE" = "beam" ]
-then
-  REMIX_FILE=kettle-neo4j-remix-beam-${REMIX_VERSION}.zip
+  REMIX_ZIP=kettle-neo4j-remix-beam-${REMIX_VERSION}.zip
+  REMIX_TGZ=kettle-neo4j-remix-beam-${REMIX_VERSION}.tgz
+  REMIX_LOG=kettle-neo4j-remix-beam-${REMIX_VERSION}.log
 
   # Make sure the beam plugin can be found
   #
@@ -53,24 +56,28 @@ then
   fi
 
 ################################################################
-# BEAM options
+# Kettle options
 ################################################################
 
 elif [ "$BUILD_TYPE" = "kettle" ]
 then
-  REMIX_FILE=kettle-neo4j-remix-${REMIX_VERSION}.zip
+  REMIX_ZIP=kettle-neo4j-remix-${REMIX_VERSION}.zip
+  REMIX_TGZ=kettle-neo4j-remix-${REMIX_VERSION}.tgz
+  REMIX_LOG=kettle-neo4j-remix-${REMIX_VERSION}.log
 else
   echo Specify \"beam\" or \"kettle\" as build type
   exit
 fi
 
+LOGFILE=${TMP_DIR_BASE}/${REMIX_LOG}
+> $LOGFILE
 
 ################################################################
 # Start the build
 ################################################################
 
-echo Remix build start
-echo Remix version : ${REMIX_VERSION}
+echo Remix build start >> ${LOGFILE}
+echo Remix version : ${REMIX_VERSION} >> ${LOGFILE}
 
 if [ -d /tmp/data-integration ]
 then
@@ -79,14 +86,14 @@ fi
 
 # Unzip the BASE_FILE
 #
-echo Extracting base archive ${BASE_FILE}
+echo Extracting base archive ${BASE_FILE} >> ${LOGFILE}
 unzip -q $BASE_FILE -d /tmp/
 
 # Get rid of a bunch of plugins...
 #
 for plugin in ${PLUGINS_TO_DELETE_LIST}
 do
-  echo Removing plugin ${plugin}
+  echo Removing plugin ${plugin} >> ${LOGFILE}
   rm -rf $KETTLE_FOLDER/plugins/${plugin}
 done
 
@@ -98,12 +105,12 @@ then
   # Install the Kettle Beam plugin
   #
   unzip -q -o $BEAM_PLUGIN_FILE -d $KETTLE_FOLDER/plugins
-  echo Installed $BEAM_PLUGIN_FILE
+  echo Installed $BEAM_PLUGIN_FILE >> ${LOGFILE}
 
   # Patch the run configuration
   #
   unzip -q -o $ENGINE_CONFIG_PATCH -d $KETTLE_FOLDER
-  echo Patched to add the Beam Run Configuration
+  echo Patched to add the Beam Run Configuration >> ${LOGFILE}
 fi
 
 cp getLatestSamples.sh $TMP_DIR_BASE
@@ -113,43 +120,43 @@ cp getLatestSpoonGit.sh $TMP_DIR_BASE
 # get the latest samples
 #
 cd $TMP_DIR_BASE
-./getLatestSamples.sh
+./getLatestSamples.sh >> ${LOGFILE}
 unzip -q -o kettle-plugin-examples.zip -d $KETTLE_FOLDER
 cd - > /dev/null
 
 # Latest Azure plugins
 #
-./getLatestBase.sh mattcasters/kettle-azure-event-hubs kettle-azure-event-hubs
+./getLatestBase.sh mattcasters/kettle-azure-event-hubs kettle-azure-event-hubs >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-azure-event-hubs-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest Data Set plugins
 #
-./getLatestBase.sh mattcasters/pentaho-pdi-dataset pentaho-pdi-dataset
+./getLatestBase.sh mattcasters/pentaho-pdi-dataset pentaho-pdi-dataset >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/pentaho-pdi-dataset-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest Kettle debug plugin
 #
-./getLatestBase.sh mattcasters/kettle-debug-plugin kettle-debug-plugin
+./getLatestBase.sh mattcasters/kettle-debug-plugin kettle-debug-plugin >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-debug-plugin-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest Neo4j plugins
 #
-./getLatestBase.sh knowbi/knowbi-pentaho-pdi-neo4j-output Neo4JOutput
+./getLatestBase.sh knowbi/knowbi-pentaho-pdi-neo4j-output Neo4JOutput >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/Neo4JOutput-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest Kettle Neo4j Logging plugin
 #
-./getLatestBase.sh mattcasters/kettle-neo4j-logging kettle-neo4j-logging
+./getLatestBase.sh mattcasters/kettle-neo4j-logging kettle-neo4j-logging >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-neo4j-logging-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest Kettle Metastore plugin
 #
-./getLatestBase.sh mattcasters/kettle-metastore kettle-metastore
+./getLatestBase.sh mattcasters/kettle-metastore kettle-metastore >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-metastore-latest.zip -d $KETTLE_FOLDER/plugins
 
 # Latest needful things & install Maitre
 #
-./getLatestBase.sh mattcasters/kettle-needful-things kettle-needful-things
+./getLatestBase.sh mattcasters/kettle-needful-things kettle-needful-things >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-needful-things-latest.zip -d $KETTLE_FOLDER/plugins
 cp $KETTLE_FOLDER/plugins/kettle-needful-things/Maitre.bat $KETTLE_FOLDER
 cp $KETTLE_FOLDER/plugins/kettle-needful-things/maitre.sh $KETTLE_FOLDER
@@ -158,17 +165,17 @@ cp $KETTLE_FOLDER/plugins/kettle-needful-things/lib/picocli-*.jar $KETTLE_FOLDER
 
 # GitSpoon!
 #
-./getLatestSpoonGit.sh 
+./getLatestSpoonGit.sh  >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/pdi-git-plugin-latest.zip -d $KETTLE_FOLDER/plugins
 
 # The Environment plugin
 #
-./getLatestBase.sh mattcasters/kettle-environment kettle-environment
+./getLatestBase.sh mattcasters/kettle-environment kettle-environment >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/kettle-environment-latest.zip -d $KETTLE_FOLDER/plugins
 
 # The Load Text From File plugin
 #
-./getLatestBase.sh mattcasters/load-text-from-file-plugin load-text-from-file-plugin
+./getLatestBase.sh mattcasters/load-text-from-file-plugin load-text-from-file-plugin >> ${LOGFILE}
 unzip -q -o $TMP_DIR_BASE/load-text-from-file-plugin-latest.zip -d $KETTLE_FOLDER/plugins
 
 ################################################################
@@ -180,29 +187,44 @@ unzip -q -o $TMP_DIR_BASE/load-text-from-file-plugin-latest.zip -d $KETTLE_FOLDE
 cd $KETTLE_FOLDER
 chmod -R o-w *
 chmod 770 ../data-integration
-echo file permissions fixed
+echo file permissions fixed >> ${LOGFILE}
 
 # Now zip it back up...
 #
-echo Building remix archive ${REMIX_FILE}
 cd $TMP_DIR_BASE
-if [ -f "$REMIX_FILE" ]
+if [ -f "$REMIX_ZIP" ]
 then
-  rm -f "$REMIX_FILE"
+  rm -f "$REMIX_ZIP"
+fi
+if [ -f "$REMIX_TGZ" ]
+then
+  rm -f "$REMIX_TGZ"
 fi
 
-zip -q -r "$REMIX_FILE" data-integration
+################################################################
+# Packaging
+################################################################
+
+echo Building remix archive ${REMIX_ZIP} >> ${LOGFILE}
+zip -q -r "$REMIX_ZIP" data-integration
+echo Building remix archive ${REMIX_TGZ} >> ${LOGFILE}
+tar -czf "$REMIX_TGZ" data-integration
 
 ################################################################
 # Upload to AWS
 ################################################################
 
-echo Uploading remix archive to s3://kettle-neo4j
+echo Uploading archive to s3://kettle-neo4j/$REMIX_ZIP >> ${LOGFILE}
+s3cmd put "$REMIX_ZIP" s3://kettle-neo4j/ --multipart-chunk-size-mb=4096
+s3cmd setacl s3://kettle-neo4j/"$REMIX_ZIP" --acl-public
 
-s3cmd put "$REMIX_FILE" s3://kettle-neo4j/ --multipart-chunk-size-mb=4096
-s3cmd setacl s3://kettle-neo4j/"$REMIX_FILE" --acl-public
+echo Uploading archive to s3://kettle-neo4j/$REMIX_TGZ >> ${LOGFILE}
+s3cmd put "$REMIX_TGZ" s3://kettle-neo4j/ --multipart-chunk-size-mb=4096
+s3cmd setacl s3://kettle-neo4j/"$REMIX_TGZ" --acl-public
+
+echo Remix build done >> ${LOGFILE}
+
+s3cmd put "$REMIX_LOG" s3://kettle-neo4j/ --multipart-chunk-size-mb=4096
+s3cmd setacl s3://kettle-neo4j/"$REMIX_LOG" --acl-public
 
 cd -
-
-echo Remix build done
-
