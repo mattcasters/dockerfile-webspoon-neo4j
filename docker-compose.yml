@@ -5,6 +5,8 @@ services:
     image: neo4j:latest
     environment:
       - "NEO4J_AUTH=neo4j/7BOHy2ASDt7&"
+      - "NEO4J_dbms_memory_heap_max__size=4g"
+      - "NEO4J_dbms_memory_pagecache_size=2g"
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -17,7 +19,7 @@ services:
       - neo
     image: mattcasters/webspoon-neo4j:latest
     environment:
-     - "JAVA_OPTS=-Xms16g -Xmx16g -DNEO4J_LOGGING_CONNECTION=Local"
+     - "JAVA_OPTS=-Xms12g -Xmx12g -DNEO4J_LOGGING_CONNECTION=Local"
     ports:
       - "8080:8080"
     links:
