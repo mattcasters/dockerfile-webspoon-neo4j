@@ -189,6 +189,17 @@ chmod -R o-w *
 chmod 770 ../data-integration
 echo file permissions fixed >> ${LOGFILE}
 
+# Patch Spoon.sh, get rid of silly warnings
+#
+< spoon.sh \
+  sed 's/ -XX:MaxPermSize=256m//g' \
+| sed 's/export UBUNTU_MENUPROXY=0/export UBUNTU_MENUPROXY=0\n\n# Skip WebkitGTK warning\n#\nexport SKIP_WEBKITGTK_CHECK=1\n/g' \
+> spoon.sh.new
+
+mv spoon.sh spoon.sh.orig
+mv spoon.sh.new spoon.sh
+echo patched \"spoon.sh\" >> ${LOGFILE}
+
 # Now zip it back up...
 #
 cd $TMP_DIR_BASE
