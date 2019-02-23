@@ -198,6 +198,7 @@ echo file permissions fixed >> ${LOGFILE}
 
 mv spoon.sh spoon.sh.orig
 mv spoon.sh.new spoon.sh
+chmod +x spoon.sh
 echo patched \"spoon.sh\" >> ${LOGFILE}
 
 # Now zip it back up...
