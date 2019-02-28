@@ -16,9 +16,9 @@ BASE_FILE=$SOFT_DIR/pdi-ce-${KETTLE_BUILD}.zip
 REMIX_VERSION=${KETTLE_BUILD}-REMIX
 TMP_DIR_BASE=/tmp
 KETTLE_FOLDER=${TMP_DIR_BASE}/data-integration
-PLUGINS_TO_DELETE_LIST="kettle-openerp-plugin kettle-shapefilereader-plugin kettle-version-checker kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin"
+PLUGINS_TO_DELETE_LIST="kettle-openerp-plugin kettle-shapefilereader-plugin kettle-version-checker kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-palo-plugin platform-utils-plugin"
 ENGINE_CONFIG_PATCH=$SOFT_DIR/pdi-engine-configuration-${KETTLE_BUILD}.zip
-BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-0.4.0.zip
+BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-0.5.0.zip
 
 # Make sure the base release file exists
 #
@@ -78,6 +78,7 @@ LOGFILE=${TMP_DIR_BASE}/${REMIX_LOG}
 
 echo Remix build start >> ${LOGFILE}
 echo Remix version : ${REMIX_VERSION} >> ${LOGFILE}
+echo Remix date    : $(date '+%F %H:%M:%S') >> ${LOGFILE}
 
 if [ -d /tmp/data-integration ]
 then
