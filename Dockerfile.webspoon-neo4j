@@ -1,4 +1,4 @@
-FROM hiromuhota/webspoon:0.8.2.18
+FROM hiromuhota/webspoon:0.8.2.18-full
 MAINTAINER Matt Casters <mattcasters@gmail.com>
 ENV JAVA_OPTS="-Xms4g -Xmx8g"
 
@@ -75,5 +75,5 @@ COPY metastore /root/.pentaho/metastore
 #
 RUN mkdir -p /root/.kettle/data/
 COPY kettle-plugin-examples.zip /tmp
-RUN unzip /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
+RUN unzip -f /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
 
