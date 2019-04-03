@@ -19,7 +19,7 @@ services:
       - neo
     image: mattcasters/webspoon-neo4j:latest
     environment:
-     - "JAVA_OPTS=-Xms12g -Xmx12g -DNEO4J_LOGGING_CONNECTION=Local"
+     - "JAVA_OPTS=-Xms12g -Xmx12g -DNEO4J_LOGGING_CONNECTION=Demo"
     ports:
       - "8080:8080"
     links:

@@ -15,8 +15,8 @@ TARGET_FILE="${FILE_BASE}-${VERSION}.zip"
 
 if [ ! -f "${TARGET_FILE}" ]
 then
-  echo "Downloading \"${TARGET_FILE}\"
-  curl --silent $ZIP -L -O
+  echo Downloading \"${TARGET_FILE}\"
+  curl --silent "${ZIP}" -L -O
 fi
 
 rm -f ${FILE_BASE}-latest.zip
