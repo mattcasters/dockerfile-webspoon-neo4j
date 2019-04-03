@@ -75,5 +75,5 @@ COPY metastore /root/.pentaho/metastore
 #
 RUN mkdir -p /root/.kettle/data/
 COPY kettle-plugin-examples.zip /tmp
-RUN unzip -f /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
+RUN unzip -o /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
 

@@ -11,8 +11,14 @@ ZIP=https://github.com/${PROJECT}/releases/download/$VERSION/${FILE_BASE}-${VERS
 
 echo $PROJECT version $VERSION
 
-curl --silent $ZIP -L -O
+TARGET_FILE="${FILE_BASE}-${VERSION}.zip"
+
+if [ ! -f "${TARGET_FILE}" ]
+then
+  echo "Downloading \"${TARGET_FILE}\"
+  curl --silent $ZIP -L -O
+fi
 
 rm -f ${FILE_BASE}-latest.zip
-mv ${FILE_BASE}-${VERSION}.zip ${FILE_BASE}-latest.zip
+ln -s ${FILE_BASE}-${VERSION}.zip ${FILE_BASE}-latest.zip
 
