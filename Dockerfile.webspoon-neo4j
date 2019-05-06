@@ -6,6 +6,7 @@ ENV JAVA_OPTS="-Xms4g -Xmx8g"
 # 
 COPY getLatestBase.sh /tmp/
 COPY getLatestSpoonGit.sh /tmp/
+COPY data-integration-static-folder.gz /tmp/
 
 # Get the latest Neo4j Kettle plugins from github
 # This creates a file /tmp/Neo4JOutput-latest.zip
@@ -13,6 +14,7 @@ COPY getLatestSpoonGit.sh /tmp/
 #
 RUN /tmp/getLatestBase.sh knowbi/knowbi-pentaho-pdi-neo4j-output Neo4JOutput
 RUN unzip /tmp/Neo4JOutput-latest.zip -d ${CATALINA_HOME}/plugins
+RUN tar -xzf /tmp/data-integration-static-folder.gz -C ${CATALINA_HOME}/
 
 # Get the latest Kettle debug plugin from github to improve debugging capabilities
 # This creates file /tmp/kettle-debug-plugin-latest.zip
