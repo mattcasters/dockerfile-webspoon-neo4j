@@ -18,7 +18,7 @@ TMP_DIR_BASE=/tmp
 KETTLE_FOLDER=${TMP_DIR_BASE}/data-integration
 PLUGINS_TO_DELETE_LIST="kettle-openerp-plugin kettle-shapefilereader-plugin kettle-version-checker kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-drools5-plugin lucid-db-streaming-loader-plugin ms-access-plugins pdi-teradata-tpt-plugin kettle-palo-plugin platform-utils-plugin"
 ENGINE_CONFIG_PATCH=$SOFT_DIR/pdi-engine-configuration-${KETTLE_BUILD}.zip
-BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-0.6.0.zip
+BEAM_PLUGIN_FILE=$SOFT_DIR/kettle-beam-1.0.0-beta-20190627.zip
 CARTE_PATCH_FILE=data-integration-static-folder.gz
 
 # Make sure the base release file exists
