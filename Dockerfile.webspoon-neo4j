@@ -1,12 +1,17 @@
-FROM hiromuhota/webspoon:0.8.2.18-full
+FROM hiromuhota/webspoon:nightly
 MAINTAINER Matt Casters <mattcasters@gmail.com>
 ENV JAVA_OPTS="-Xms4g -Xmx8g"
+
+USER root
 
 # Common latest-from-github-releases download script
 # 
 COPY getLatestBase.sh /tmp/
 COPY getLatestSpoonGit.sh /tmp/
 COPY data-integration-static-folder.gz /tmp/
+
+RUN echo ${CATALINA_HOME}
+RUN echo --------------------------
 
 # Get the latest Neo4j Kettle plugins from github
 # This creates a file /tmp/Neo4JOutput-latest.zip
@@ -75,6 +80,7 @@ COPY metastore /root/.pentaho/metastore
 
 # Copy the Neo4j plugin examples project into /root/.kettle/data/
 #
+RUN chown root /root
 RUN mkdir -p /root/.kettle/data/
 COPY kettle-plugin-examples.zip /tmp
 RUN unzip -o /tmp/kettle-plugin-examples.zip -d /root/.kettle/data/
